@@ -1,0 +1,43 @@
+# Bytecode do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos temporários
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Arquivos de configuração sensíveis
+config.py
+.env
+*.env
+
+# Cache de pacotes
+pip-wheel-metadata/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Dados gerados
+borg3_logs.txt
+
+# Arquivos do Termux
+termux.properties
+
+# Arquivos do Acode
+.acode/
+.settings/
+
+# Banco de dados local ou arquivos temporários de sessão
+*.sqlite
+*.db
+*.session
+
+# Outros arquivos ocultos
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
