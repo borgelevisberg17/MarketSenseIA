@@ -144,11 +144,11 @@ O MarketSense AI foi construído com ferramentas modernas e acessíveis:
 ## **📸 Imagens do Projeto**
 
 ### **Exemplo de Interação no Telegram**
-![Interação no Telegram](https://via.placeholder.com/400x200.png?text=Interação+no+Telegram)  
+![Interação no Telegram](assets/print1.png)  
 *Substitua por uma captura de tela real do bot em ação.*
 
 ### **Infográfico Gerado**
-![Infográfico](https://via.placeholder.com/400x200.png?text=Infográfico+Gerado)  
+![Infográfico](assets/print2png)  
 *Substitua por um infográfico real gerado pelo Gemini.*
 
 ---
@@ -164,7 +164,7 @@ O MarketSense AI foi construído com ferramentas modernas e acessíveis:
 
 ## **🤝 Contribua com o Projeto**
 
-Quer ajudar a melhorar o MarketSense AI? Abra uma issue, envie um pull request ou sugira novas funcionalidades no [repositório do GitHub](https://github.com/borgelevisberg17/MarketSenseAi). Toda contribuição é bem-vinda!
+Quer ajudar a melhorar o MarketSense AI? Abra uma issue, envie um pull request ou sugira novas funcionalidades no [repositório do GitHub](https://github.com/borgelevisberg17/MarketSenseIA). Toda contribuição é bem-vinda!
 
 ---
 
