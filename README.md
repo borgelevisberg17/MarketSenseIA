@@ -3,7 +3,9 @@
 
 ### **Agente de Inteligência de Mercado com Google Gemini**
 
-![MarketSense AI Logo](https://via.placeholder.com/150x150.png?text=MarketSense+AI)  
+<p align="center">
+  <img src="https://img.shields.io/badge/MarketSenseAI-Estratégias%20de%20Mercado%20com%20IA-7209b7?style=for-the-badge&logo=python&logoColor=white"/>
+</p>
 
 
 ---
@@ -61,7 +63,7 @@ python marketAgent.py
 > **Nota**: Para rodar o bot em segundo plano no Termux, use `tmux`:  
 > ```bash  
 > tmux new -s marketsense  
-> python main.py  
+> python marketAgent.py  
 > ```
 > Saia do tmux com `Ctrl+B` e depois `D` sem interromper o bot.
 
@@ -148,7 +150,7 @@ O MarketSense AI foi construído com ferramentas modernas e acessíveis:
 *Substitua por uma captura de tela real do bot em ação.*
 
 ### **Infográfico Gerado**
-![Infográfico](assets/print2png)  
+![Infográfico](assets/print2.png)  
 *Substitua por um infográfico real gerado pelo Gemini.*
 
 ---
