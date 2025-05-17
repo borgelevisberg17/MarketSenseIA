@@ -79,15 +79,13 @@ O **MarketSense AI** é estruturado em um pipeline modular com três agentes pri
 
 ```mermaid
 flowchart LR
-  A[Usuário no Telegram] -->|Mensagem| B(Bot MarketSense AI)
-  B --> C{Pipeline}
-  C --> C1[Rastreador\n(Google Search)]
-  C1 --> C2[Analista\n(Insights)]
-  C2 --> C3[Relatório\n(Prompt + Texto)]
+  A[Usuário no Telegram] -->|Mensagem| B[Bot MarketSense AI]
+  B --> C{Gasoduto}
+  C --> C1[Rastreador: Pesquisa Google]
+  C1 --> C2[Analista: Insights]
+  C2 --> C3[Relatório: Prompt + Texto]
   C3 --> D[Extração do Prompt]
-  D --> E[Gemini Image Generation]
-  E --> B
-  B -->|Infográfico| A
+  D --> E[Geração de Imagem de Gêmeos]
 ```
 
 - **Rastreador**: Busca dados relevantes na web usando o Google Search.
