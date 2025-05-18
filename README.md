@@ -145,11 +145,11 @@ O MarketSense AI foi construído com ferramentas modernas e acessíveis:
 
 ### **Exemplo de Interação no Telegram**
 ![Interação no Telegram](assets/print1.png)  
-*Substitua por uma captura de tela real do bot em ação.*
+*telegram.*
 
 ### **Infográfico Gerado**
 ![Infográfico](assets/print2.png)  
-*Substitua por um infográfico real gerado pelo Gemini.*
+*gemini.*
 
 ---
 
