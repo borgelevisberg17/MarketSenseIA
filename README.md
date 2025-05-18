@@ -9,6 +9,19 @@
 
 
 ---
+````
+## Sumário
+- Visão Geral
+- Funcionalidades
+- Instalação
+- Arquitetura
+- Estrutura de Pastas
+- Tecnologias Utilizadas
+- Exemplos de Uso
+- Sobre o Autor
+- Contribua
+- Licença
+````
 
 ## **📌 Visão Geral**
 
@@ -30,8 +43,8 @@ Configure o **MarketSense AI** no seu ambiente local (Termux + Acode) com os pas
 
 ### **1. Clone o Repositório**
 ```bash
-git clone https://github.com/seu-usuario/marketsense-ai.git
-cd marketsense-ai
+git clone https://github.com/borgelevisberg17/MarketSenseIA.git
+cd MarketSenseIA
 ```
 
 ### **2. Instale as Dependências**
@@ -105,6 +118,7 @@ marketsense-ai/
 ├─ README.md           # Documentação completa do projeto (você está aqui!)
 ├─ borg3_logs.txt      # Registro de logs para debug e monitoramento
 ├─ requirements.txt    # Lista de dependências 
+├── LICENSE             # Licença MIT do projeto
 ```
 
 ---
