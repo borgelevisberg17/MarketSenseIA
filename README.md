@@ -66,6 +66,7 @@ TELEGRAM_TOKEN = "seu_telegram_token_aqui"
 ```
 - **GOOGLE_API_KEY**: Obtenha sua chave no [Google AI Studio](https://aistudio.google.com/).
 - **TELEGRAM_TOKEN**: Crie um bot com o [BotFather](https://t.me/BotFather) no Telegram.
+- **ADMIN_ID (Opcional)**: Para usar o comando `/broadcast`, você precisará configurar seu ID de usuário do Telegram no arquivo `marketAgent.py`. Procure pela variável `admin_id` na função `broadcast` e substitua o valor `85732168` pelo seu ID. Você pode obter seu ID de usuário com bots como o `@userinfobot`.
 
 ### **4. Execute o Bot**
 Inicie o script principal:
