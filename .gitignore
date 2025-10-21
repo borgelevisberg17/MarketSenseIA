@@ -35,6 +35,7 @@ termux.properties
 *.sqlite
 *.db
 *.session
+user_data.json
 
 # Outros arquivos ocultos
 .DS_Store

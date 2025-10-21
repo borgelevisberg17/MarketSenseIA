@@ -26,10 +26,35 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler, MessageHandler, filters
 import logging
 import tempfile
+import re
+from telegram.ext import ConversationHandler
 from config import(
   GOOGLE_API_KEY,
   TELEGRAM_TOKEN
   )
+
+# User data management
+USER_DATA_FILE = 'user_data.json'
+
+def registrar_usuario(chat_id):
+    """Registra um novo usuário ou garante que um usuário existente tenha a estrutura de dados correta."""
+    chat_id_str = str(chat_id)
+    try:
+        try:
+            with open(USER_DATA_FILE, 'r') as f:
+                data = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            data = {"users": {}}
+
+        if chat_id_str not in data.get("users", {}):
+            data.setdefault("users", {})[chat_id_str] = {"email": None}
+            with open(USER_DATA_FILE, 'w') as f:
+                json.dump(data, f, indent=4)
+            logger.info(f"Novo usuário registrado: {chat_id_str}")
+
+    except Exception as e:
+        logger.error(f"Erro ao registrar usuário {chat_id_str}: {e}")
+
 # Configuração do Logging -----
 logging.basicConfig(
     level=logging.DEBUG,
@@ -245,6 +270,7 @@ async def gerar_e_enviar_imagem(update: Update, context: ContextTypes.DEFAULT_TY
 async def processar_topico(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Processa o tópico enviado pelo usuário e executa o pipeline."""
     chat_id = update.effective_chat.id
+    registrar_usuario(chat_id)
     topico = update.message.text
     hoje = str(date.today())
     logger.debug(f"Recebida mensagem do chat_id {chat_id}: {topico}")
@@ -293,16 +319,114 @@ async def processar_topico(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(
             f"Ocorreu um erro ao processar o tópico. Tente novamente ou envie um novo tópico."
         )
+
+# Estados da conversa
+ASKING_EMAIL = 0
+
+async def promo_start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Inicia o funil de captura de leads."""
+    await update.message.reply_text(
+        "🎉 Quer receber um resumo semanal das tendências de mercado no seu e-mail?\n\n"
+        "Deixe seu melhor e-mail abaixo para se inscrever!"
+    )
+    return ASKING_EMAIL
+
+async def receber_email(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Salva o e-mail do usuário."""
+    chat_id = update.effective_chat.id
+    email = update.message.text
+
+    # Validação simples de e-mail
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        await update.message.reply_text("🤔 E-mail inválido. Por favor, envie um e-mail válido.")
+        return ASKING_EMAIL
+
+    try:
+        with open(USER_DATA_FILE, 'r') as f:
+            data = json.load(f)
+
+        data["users"][str(chat_id)]["email"] = email
+
+        with open(USER_DATA_FILE, 'w') as f:
+            json.dump(data, f, indent=4)
+
+        await update.message.reply_text("✅ Sucesso! Seu e-mail foi registrado. Fique de olho na sua caixa de entrada!")
+        return ConversationHandler.END
+
+    except Exception as e:
+        logger.error(f"Erro ao salvar e-mail para {chat_id}: {e}")
+        await update.message.reply_text("❌ Ocorreu um erro ao salvar seu e-mail. Tente novamente.")
+        return ConversationHandler.END
+
+async def cancelar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
+    """Cancela a operação."""
+    await update.message.reply_text("Operação cancelada.")
+    return ConversationHandler.END
+
 #Configuração dk telegram----
+async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Envia uma mensagem para todos os usuários registrados."""
+    admin_id = 85732168 # Substitua pelo seu ID de admin do Telegram
+    chat_id = update.effective_chat.id
+
+    if chat_id != admin_id:
+        await update.message.reply_text("Você não tem permissão para usar este comando.")
+        return
+
+    message = " ".join(context.args)
+    if not message:
+        await update.message.reply_text("Por favor, forneça uma mensagem para o broadcast. Uso: /broadcast <mensagem>")
+        return
+
+    try:
+        with open(USER_DATA_FILE, 'r') as f:
+            data = json.load(f)
+        users = data.get("users", {}).keys()
+    except (FileNotFoundError, json.JSONDecodeError):
+        users = []
+
+    if not users:
+        await update.message.reply_text("Nenhum usuário registrado para receber o broadcast.")
+        return
+
+    success_count = 0
+    failure_count = 0
+    for user_id in users:
+        try:
+            await context.bot.send_message(chat_id=user_id, text=message)
+            success_count += 1
+            await asyncio.sleep(0.1)  # Evita rate limiting
+        except Exception as e:
+            logger.error(f"Falha ao enviar mensagem para {user_id}: {e}")
+            failure_count += 1
+
+    await update.message.reply_text(
+        f"Broadcast concluído!\n"
+        f"Enviado para: {success_count} usuários\n"
+        f"Falhas: {failure_count}"
+    )
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Handler para o comando /start."""
+    chat_id = update.effective_chat.id
+    registrar_usuario(chat_id)
     await update.message.reply_text("Analyzer está on! Mande o tópico que mando pra você tudo que precisa ✨!")
 
 def main():
     """Configura e inicia o bot do Telegram."""
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
 
+    conv_handler = ConversationHandler(
+        entry_points=[CommandHandler("promo", promo_start)],
+        states={
+            ASKING_EMAIL: [MessageHandler(filters.TEXT & ~filters.COMMAND, receber_email)]
+        },
+        fallbacks=[CommandHandler("cancelar", cancelar)],
+    )
+
+    application.add_handler(conv_handler)
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("broadcast", broadcast))
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, processar_topico))
 
     application.run_polling()
