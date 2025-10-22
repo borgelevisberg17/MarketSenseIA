@@ -10,7 +10,6 @@ __pycache__/
 *.swo
 
 # Arquivos de configuração sensíveis
-config.py
 .env
 *.env
 
