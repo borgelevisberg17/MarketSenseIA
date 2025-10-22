@@ -32,7 +32,8 @@ from config import(
   GOOGLE_API_KEY,
   TELEGRAM_TOKEN
   )
-
+from dotenv import load_dotenv
+load_dotenv()
 # User data management
 USER_DATA_FILE = 'user_data.json'
 
