@@ -1,9 +1,9 @@
 python-telegram-bot
 Pillow
-asyncio 
-logging 
-requests 
-aiohttp 
+asyncio
+logging
+requests
+aiohttp
 google-genai
 google-adk
-
+python-telegram-bot[webhooks]
