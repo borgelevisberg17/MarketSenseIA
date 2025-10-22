@@ -422,20 +422,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     chat_id = update.effective_chat.id
     registrar_usuario(chat_id)
     await update.message.reply_text("Analyzer está on! Mande o tópico que mando pra você tudo que precisa ✨!")
-from flask import Flask
-from threading import Thread
 
-def start_ping_server():
-    app = Flask("ping_server")
-
-    @app.route("/ping")
-    def ping():
-        return "pong", 200
-
-    app.run(host="0.0.0.0", port=8080)
-
-# Inicia o mini servidor Flask em paralelo
-Thread(target=start_ping_server).start()
 def main():
     """Configura e inicia o bot do Telegram no modo webhook (Render)."""
     application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
