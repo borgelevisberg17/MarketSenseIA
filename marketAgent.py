@@ -377,10 +377,10 @@ async def cancelar(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
 #Configuração dk telegram----
 async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Envia uma mensagem para todos os usuários registrados."""
-    admin_id = 85732168 # Substitua pelo seu ID de admin do Telegram
+    admin_ids = [85732168, 5913164677] # Substitua pelo seu ID de admin do Telegram
     chat_id = update.effective_chat.id
 
-    if chat_id != admin_id:
+    if chat_id not in admin_ids:
         await update.message.reply_text("Você não tem permissão para usar este comando.")
         return
 
@@ -455,7 +455,7 @@ def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, processar_topico))
 
     # Configurações para Render
-    PORT = int(os.environ.get("PORT", 8443))
+    PORT = int(os.environ.get("PORT", 8080))
     WEBHOOK_URL = f"https://{os.environ.get('RENDER_EXTERNAL_URL')}/"
 
     # Inicia com webhook
